@@ -1,0 +1,23 @@
+<aside class="fixed top-0 left-0 h-full w-24 bg-white shadow-lg flex flex-col justify-between py-8 z-10 rounded-r-3xl border-r border-gray-100">
+  <div class="flex flex-col items-center gap-10">
+    <button class="text-3xl text-gray-700 hover:text-indigo-600 transition">
+      <i class="pi pi-bars"></i>
+    </button>
+    <nav class="flex flex-col items-center gap-8 text-xs text-gray-600">
+         @for(item of sidebarItems; track item.name){
+            <div class="flex flex-col items-center cursor-pointer hover:text-indigo-700 transition" (click)="onNavItemClick(item)" 
+            [ngClass]="item.isActive?'text-indigo-600':''">
+                <i [class]="item.icon" class="text-xl"></i>
+                <span class="mt-2 font-medium">{{item.name}}</span>
+            </div>
+        }
+       
+    </nav>
+  </div>
+  <div class="flex flex-col items-center">
+    <button class="flex flex-col items-center text-gray-400 hover:text-red-500 transition">
+      <i class="pi pi-power-off text-2xl"></i>
+      <span class="text-xs mt-2 font-medium">Log Out</span>
+    </button>
+  </div>
+</aside>

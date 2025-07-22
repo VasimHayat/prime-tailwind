@@ -85,59 +85,10 @@
                 {{ col.header }}
                 <p-sortIcon [field]="col.field"></p-sortIcon>
                 <p-columnFilter type="{{col.filter}}" field="{{col.field}}" display="menu" />
-        </div>
-             <!-- <p-sortIcon field="{{col.field}}" /> 
-            {{col.header}} 
-             <p-columnFilter type="{{col.filter}}" field="{{col.field}}" display="menu" /> -->
+        </div> 
         </th>
-        }
-
-        
-        <!-- <th pSortableColumn="orderId"> 
-               <p-sortIcon field="orderId" /> Order ID
-            
-       </th>
-        <th  pSortableColumn="customerFName"> 
-            <p-sortIcon field="customerFName" /> Customer
-        </th>
-        <th  pSortableColumn="orderedDate">
-            <p-sortIcon field="orderedDate" />   
-            Order Date
-        </th>
-        <th  pSortableColumn="eventDate">
-             <p-sortIcon field="eventDate" /> 
-            Event Date
-        </th>
-        <th  pSortableColumn="source">
-             <p-sortIcon field="source" /> 
-            Source Channel
-        </th>
-
-        <th  pSortableColumn="destination">
-             <p-sortIcon field="destination" /> 
-            Delivery Method
-        </th>
-
-        <th  pSortableColumn="totalAmount">
-             <p-sortIcon field="totalAmount" /> 
-            Total Amount($)
-        </th>
-
-          <th  pSortableColumn="amountDue">
-             <p-sortIcon field="amountDue" /> 
-            Due Amount($)
-        </th>
-     
-
-           <th  pSortableColumn="paymentStatus">
-             <p-sortIcon field="paymentStatus" /> 
-            Payment Status
-        </th>
-
-          <th  pSortableColumn="orderStatus">
-             <p-sortIcon field="orderStatus" /> 
-            Order Status
-        </th> -->
+        } 
+         
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item let-columns="columns"> 
@@ -207,58 +158,11 @@
                         }
                     </td>
                  }
-
-                <!-- <td>{{item.orderId}}</td>
-                <td>{{item.customerFName}} {{item.customerLName}}</td>
-                 <td>{{item.orderedDate}}  </td>
-
-                  <td>{{item.eventDate}}  </td>
-                   <td>
-                      <div class="flex justify-center">
-                        {{item.source}}  
-                      </div>
-
-                   </td>
-                    <td >
-                     <div class="flex justify-center"> 
-                        @if(item.destination =="PICKUP"){
-                            <i class="pi pi-map-marker text-yellow-500 text-base"></i>
-                            <span class="text-yellow-600 font-medium bg-yellow-50 px-2 py-1 rounded-full  ">Pickup</span>
-                        }@else {
-                            <i class="pi pi-truck text-blue-500 text-base"></i>
-                            <span class="text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded-full ">Delivery</span>
-                        } 
-                     </div>   
-                     
-                     
-                    </td>
  
-                    <td> 
-                         <div class="flex justify-center">
-                         {{ item.totalAmount }}
-                        </div>
-                    </td>
-                   <td>
-                     <div class="flex justify-center">{{item.amountDue}}</div>  </td>
-                    <td >
-                        <div class="flex justify-center">
-                            <p-tag [value]="item.paymentStatus" [severity]="getSeverity(item.paymentStatus)" />
-                            </div> 
-                    </td>
-                     <td> 
-                         <div class="flex justify-center">
-                            <p-tag [value]="item.orderStatus" [severity]="getSeverity(item.orderStatus)" />
-                            </div>
-                    </td> -->
 
                      
                 
-            </tr>
-        
-      <!--<tr>
-         <td><p-tableCheckbox [value]="order"></p-tableCheckbox></td> 
-       
-      </tr>-->
+            </tr> 
     </ng-template>
   </p-table> 
    }@else {

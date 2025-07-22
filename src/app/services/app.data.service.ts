@@ -1,13 +1,18 @@
 import { Injectable } from "@angular/core";
-import { Order } from "../models/app.order.model";
+import { EOOrder, Order } from "../models/app.order.model";
 
 @Injectable({
     providedIn:'root'
 })
 export class AppDataService{
+ orderArray:Array<Order> = [];
+ constructor() {
+   this.rawOrderArray.forEach((order: Order) => {
+     this.orderArray.push(new EOOrder(order));
+   });
+ }
 
-
- orderArray:Array<Order> =[
+ private rawOrderArray:Array<Order> =[
   {
     "amountDue": 0,
     "totalAmount": 6501,
@@ -27,7 +32,7 @@ export class AppDataService{
     "totalAmount": 36839,
     "customerLName": "Patel",
     "orderId": 85934,
-    "destination": "PICKUP",
+    "destination": "DELIVERY",
     "orderStatus": "CREATED",
     "customerFName": "Yash",
     "orderedDate": "07/15/2025 15:03:20",
@@ -55,7 +60,7 @@ export class AppDataService{
     "totalAmount": 36839,
     "customerLName": "Patel",
     "orderId": 85950,
-    "destination": "PICKUP",
+    "destination": "DELIVERY",
     "orderStatus": "CREATED",
     "customerFName": "Yash",
     "orderedDate": "07/16/2025 08:06:13",
@@ -69,7 +74,7 @@ export class AppDataService{
     "totalAmount": 30338,
     "customerLName": "Test",
     "orderId": 85977,
-    "destination": "PICKUP",
+    "destination": "DELIVERY",
     "orderStatus": "CREATED",
     "customerFName": "Vasu",
     "orderedDate": "07/16/2025 08:17:07",
@@ -97,7 +102,7 @@ export class AppDataService{
     "totalAmount": 1950,
     "customerLName": "Gupta",
     "orderId": 85913,
-    "destination": "PICKUP",
+    "destination": "DELIVERY",
     "orderStatus": "CREATED",
     "customerFName": "Visha",
     "orderedDate": "07/16/2025 12:24:25",

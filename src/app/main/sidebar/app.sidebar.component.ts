@@ -16,14 +16,14 @@ export class AppSidebarComponent {
     icon: 'pi pi-th-large',
     route: '/dashboard',
     description: 'View overall system summary',
-    isActive: true
+    isActive: false
   },
   {
     name: 'Orders',
     icon: 'pi pi-calendar',
     route: '/orders',
     description: 'Manage customer orders',
-    isActive: false
+    isActive: true
   },
   {
     name: 'Quotes',

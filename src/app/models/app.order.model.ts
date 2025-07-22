@@ -5,12 +5,12 @@ export class EOOrder implements Order {
     orderId: number;
     destination: string;
     orderStatus: string;
-    customerFName: string;
-    orderedDate: string;
-    time: string;
+    customerFName: string; 
+    time: string |Date;
     source: string;
     paymentStatus: string;
-    eventDate: string;
+    eventDate: string |Date;
+    orderedDate: string|Date;
 
      constructor(ord:any) {
         this.amountDue = ord.amountDue;
@@ -20,11 +20,13 @@ export class EOOrder implements Order {
         this.destination = ord.destination;
         this.orderStatus = ord.orderStatus;
         this.customerFName = ord.customerFName;
-        this.orderedDate = ord.orderedDate;
-        this.time = ord.time;
+        this.orderedDate = new Date(ord.orderedDate);
+        this.time = new Date(ord.time);
+        // this.orderedDate = ord.orderedDate;
+        // this.time = ord.time;
         this.source = ord.source;
         this.paymentStatus = ord.paymentStatus;
-        this.eventDate = ord.eventDate;
+        this.eventDate = new Date(ord.eventDate);
     }
 }
 
@@ -36,9 +38,9 @@ export interface Order {
     destination: string;
     orderStatus: string;
     customerFName: string;
-    orderedDate: string;
-    time: string;
+    orderedDate: string | Date;
+    time: string | Date;
     source: string;
     paymentStatus: string;
-    eventDate: string;
+    eventDate: string | Date;
 }

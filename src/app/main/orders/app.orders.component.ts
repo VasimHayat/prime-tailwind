@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox'; 
@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { Tag } from 'primeng/tag'; 
+import { ButtonModule } from 'primeng/button'; 
 
 
 import { AppDataService } from "../../services/app.data.service";
@@ -16,12 +17,19 @@ import { FormsModule } from "@angular/forms";
 interface Column {
     field: string;
     header: string;
+     filter: string;
 }
 
 @Component({ 
     standalone: true,
     templateUrl: './app.orders.component.html',
-   imports: [CommonModule,FormsModule, TableModule, CheckboxModule,MultiSelectModule,InputTextModule,IconField,InputIcon,Tag],
+     imports: [CommonModule,FormsModule, TableModule, CheckboxModule,MultiSelectModule,InputTextModule,IconField,InputIcon,Tag,ButtonModule],
+     encapsulation:ViewEncapsulation.None,
+     styles: [`
+       .p-datatable-filter-overlay {
+           padding:10px;
+        }
+        `]
 })
 export class AppOrdersComponent implements OnInit{ 
 
@@ -29,15 +37,15 @@ export class AppOrdersComponent implements OnInit{
 
     constructor(private dataService: AppDataService,private cd: ChangeDetectorRef) {
         this.cols = [             
-            { field: 'customerFName', header: 'Customer' },
-            { field: 'orderedDate', header: 'Order Date' },
-             { field: 'eventDate', header: 'Event Date' },
-            { field: 'source', header: 'Source Channel' },
-            { field: 'destination', header: 'Destination' },
-             { field: 'totalAmount', header: 'Total Amount($)' },
-            { field: 'amountDue', header: 'Due Amount($)' },
-            { field: 'paymentStatus', header: 'Payment Status' },
-            { field: 'orderStatus', header: 'Order Status' }        
+            { field: 'customerFName', header: 'Customer',filter:'text' },
+            { field: 'orderedDate', header: 'Order Date',filter:'date' },
+             { field: 'eventDate', header: 'Event Date',filter:'date' },
+            { field: 'source', header: 'Source Channel' ,filter:'text'},
+            { field: 'destination', header: 'Destination',filter:'text' },
+             { field: 'totalAmount', header: 'Total Amount',filter:'numeric' },
+            { field: 'amountDue', header: 'Due Amount',filter:'numeric' },
+            { field: 'paymentStatus', header: 'Payment Status',filter:'text' },
+            { field: 'orderStatus', header: 'Order Status',filter:'text' }        
         ];
         this.selectedColumns = this.cols;
     }
@@ -62,6 +70,12 @@ export class AppOrdersComponent implements OnInit{
             return "info"
         }
          
+    }
+
+    clear(dt:any) {
+        dt.clear();
+        this.selectedColumns = this.cols;
+        this.searchTerm = '';
     }
 
 //   orders = [

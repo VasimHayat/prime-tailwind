@@ -2,10 +2,10 @@
 
 
 
-   <div class="flex justify-between items-center mb-6">
-    <h2 class="text-xl font-semibold">Orders Overview</h2>
+   <div class="flex justify-between items-center my-3">
+    <h2 class="text-xl font-semibold">Orders Summary</h2>
     <button class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-lg shadow hover:bg-indigo-700">
-      <i class="pi pi-plus mr-2"></i>Add New
+      <i class="pi pi-refresh  mr-2"></i>Sync
     </button>
   </div>
 
@@ -15,9 +15,11 @@
    #dt1
      [value]="orderList" 
      [paginator]="true"
+       [scrollable]="true"
+      scrollDirection="horizontal"
      [rows]="10"
       [columns]="selectedColumns"
-     [rowsPerPageOptions]="[10, 20, 30]" 
+     [rowsPerPageOptions]="[10,15, 20, 30]" 
      [globalFilterFields]="['orderId', 'customerFName', 'customerLame', 'orderedDate','eventDate',   'source','destination','totalAmount','amountDue','paymentStatus','orderStatus']"
      class="p-datatable-sm  shadow rounded-xl" styleClass="w-full text-sm">
 
@@ -27,6 +29,7 @@
                
                 <div class="flex">
                 <!-- <p-button label="Clear" [outlined]="true" icon="pi pi-filter-slash" size="small" (click)="clear(glbPdt)" />  -->
+           
 
                  <p-multiselect
                     display="chip"
@@ -36,6 +39,8 @@
                     selectedItemsLabel="{0} columns selected"
                     [style]="{'min-width': '200px'}"
                     placeholder="Choose Columns" />
+
+                       <p-button label="Clear" class="ml-2" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(dt1)" />
 
                   <p-iconfield iconPosition="left" class="ml-auto">
                       <p-inputicon>
@@ -57,12 +62,31 @@
         <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
 
          <th pSortableColumn="orderId"> 
-               <p-sortIcon field="orderId" /> Order ID
+
+           <div class="flex items-center gap-2 whitespace-nowrap">
+               Order Id
+                <p-sortIcon [field]="'orderId'"></p-sortIcon>
+                <p-columnFilter
+                  [field]="'orderId'"
+                  [matchMode]="'contains'"
+                  display="icon"
+                ></p-columnFilter>
+        </div>
+
+               <!-- <p-sortIcon field="orderId" /> Order ID
+                 <p-columnFilter type="text" field="orderId" display="menu" /> -->
             </th>
         @for(col of columns; track col.name){
-        <th  pSortableColumn="col.field">
-             <p-sortIcon field="col.field" /> 
-            {{col.header}}
+        <th  pSortableColumn="{{col.field}}">
+
+            <div class="flex items-center gap-2 whitespace-nowrap">
+                {{ col.header }}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+                <p-columnFilter type="{{col.filter}}" field="{{col.field}}" display="menu" />
+        </div>
+             <!-- <p-sortIcon field="{{col.field}}" /> 
+            {{col.header}} 
+             <p-columnFilter type="{{col.filter}}" field="{{col.field}}" display="menu" /> -->
         </th>
         }
 
@@ -117,20 +141,25 @@
     <ng-template pTemplate="body" let-item let-columns="columns"> 
             <tr>
                 <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td> 
-                <td>{{item.orderId}}</td>
+                <td>
+                  <div class="flex justify-center">
+                    {{item.orderId}}
+                  </div>
+                </td>
                  @for(col of columns; track col.name){
                     <td >
                      
                         @if(col.field == 'customerFName'){
                             {{item.customerFName}} {{item.customerLName}}
-                        }@else if(col.field == 'paymentStatus' || col.field == 'orderStatus'){
-
+                        }
+                        @else if(col.field == 'paymentStatus' || col.field == 'orderStatus'){
 
                            <div class="flex justify-center">
-                            <p-tag [value]="item.orderStatus" [severity]="getSeverity(item[col.field])" />
+                            <p-tag [value]="item[col.field]" [severity]="getSeverity(item[col.field])" />
                             </div>
 
-                        }@else if(col.field == 'destination'){
+                        }
+                        @else if(col.field == 'destination'){
 
 
                             <div class="flex justify-center"> 
@@ -143,13 +172,35 @@
                                     } 
                                 </div>  
 
-                        }@else if(col.field == 'source' || col.field == 'totalAmount' || col.field =='amountDue'){
+                        }@else if(col.field == 'source'){
 
                            <div class="flex justify-center">
                               {{item[col.field]}} 
                             </div>
 
-                        }@else {
+                        }
+                        @else if( col.field == 'totalAmount' || col.field =='amountDue'){
+
+                           <div class="flex justify-center">
+                            {{ item[col.field] | currency:'USD':'symbol':'1.0-0' }} 
+                            </div>
+
+                        }
+                        @else if(col.field == 'orderedDate'){
+
+                           <div class="flex justify-center">
+                              {{item[col.field] | date:'MM/dd/yyyy HH:mm:ss'}} 
+                            </div>
+
+                        }
+                        @else if(col.field == 'eventDate'){
+
+                           <div class="flex justify-center">
+                              {{item[col.field] | date:'MM/dd/yyyy'}} 
+                            </div>
+
+                        }
+                        @else {
                             {{item[col.field]}} 
                         }
                     </td>

@@ -15,9 +15,11 @@
    #dt1
      [value]="orderList" 
      [paginator]="true"
-       [scrollable]="true"
+      [scrollable]="true"
       scrollDirection="horizontal"
-     [rows]="10"
+      [resizableColumns]="true"
+       columnResizeMode="fit" 
+      [rows]="10"
       [columns]="selectedColumns"
      [rowsPerPageOptions]="[10,15, 20, 30]" 
      [globalFilterFields]="['orderId', 'customerFName', 'customerLame', 'orderedDate','eventDate',   'source','destination','totalAmount','amountDue','paymentStatus','orderStatus']"
@@ -59,9 +61,9 @@
 
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+        <th pFrozenColumn><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
 
-         <th pSortableColumn="orderId"> 
+         <th pSortableColumn="orderId" pFrozenColumn> 
 
            <div class="flex items-center gap-2 whitespace-nowrap">
                Order Id
@@ -77,7 +79,7 @@
                  <p-columnFilter type="text" field="orderId" display="menu" /> -->
             </th>
         @for(col of columns; track col.name){
-        <th  pSortableColumn="{{col.field}}">
+        <th  pSortableColumn="{{col.field}}" pResizableColumn  class="min-w-[150px] whitespace-nowrap">
 
             <div class="flex items-center gap-2 whitespace-nowrap">
                 {{ col.header }}
@@ -140,14 +142,14 @@
     </ng-template>
     <ng-template pTemplate="body" let-item let-columns="columns"> 
             <tr>
-                <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td> 
-                <td>
+                <td pFrozenColumn><p-tableCheckbox [value]="item"></p-tableCheckbox></td> 
+                <td pFrozenColumn>
                   <div class="flex justify-center">
                     {{item.orderId}}
                   </div>
                 </td>
                  @for(col of columns; track col.name){
-                    <td >
+                    <td  class="min-w-[150px] whitespace-nowrap">
                      
                         @if(col.field == 'customerFName'){
                             {{item.customerFName}} {{item.customerLName}}

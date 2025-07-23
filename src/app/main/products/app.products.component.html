@@ -1,3 +1,17 @@
 <div class="card p-5">
-  <ag-prime-table [columns]="cols" [data]="orderList"></ag-prime-table>
+  <ag-prime-table [columns]="cols" [data]="orderList" (selectionChange)="selectionChange($event)"> 
+          <ng-template agPrimeTableCol="destination" let-row>
+              <div class="flex justify-center">
+                <ng-container *ngIf="row.destination === 'PICKUP'">
+                  <i class="pi pi-map-marker text-yellow-500 text-base"></i>
+                  <span class="text-yellow-600 font-medium bg-yellow-50 px-2 py-1 rounded-full">Pickup</span>
+                </ng-container>
+                <ng-container *ngIf="row.destination !== 'PICKUP'">
+                  <i class="pi pi-truck text-blue-500 text-base"></i>
+                  <span class="text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded-full">Delivery</span>
+                </ng-container>
+              </div>
+            </ng-template>
+
+  </ag-prime-table>
 </div>

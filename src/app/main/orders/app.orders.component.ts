@@ -52,8 +52,7 @@ interface Column {
 })
 export class AppOrdersComponent implements OnInit {
   constructor(
-    private dataService: AppDataService,
-    private cd: ChangeDetectorRef
+    private dataService: AppDataService
   ) {
     this.cols = [
       { field: 'customerFName', header: 'Customer', filter: 'text' },

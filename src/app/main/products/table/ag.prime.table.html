@@ -1,50 +1,22 @@
-<p-table
-  #dt
-  showGridlines
-  stripedRows
-  [value]="data"
-  [columns]="selectedColumns"
-  [paginator]="true"
-  [rows]="rows"
-  [scrollable]="true"
-  scrollDirection="horizontal"
-  [resizableColumns]="true"
-  columnResizeMode="fit"
-  [rowsPerPageOptions]="[10, 15, 20, 30]"
-  [globalFilterFields]="globalFilterFields"
-  class="p-datatable-sm shadow rounded-xl w-full text-sm"
->
+<p-table #dt showGridlines stripedRows [value]="data" [columns]="selectedColumns" [paginator]="true" [rows]="rows"
+  [scrollable]="true" scrollDirection="horizontal" [resizableColumns]="true" columnResizeMode="fit"
+  [rowsPerPageOptions]="[10, 15, 20, 30]" [globalFilterFields]="globalFilterFields"
+  (onHeaderCheckboxToggle)="onHeaderCheckboxToggle($event)"
+    (selectionChange)="onSelectionChange($event)"
+  class="p-datatable-sm shadow rounded-xl w-full text-sm">
+
   <!-- CAPTION TOOLBAR -->
   <ng-template pTemplate="caption">
     <div class="flex items-center gap-2">
-      <p-multiselect
-        display="chip"
-        [options]="columns"
-        [(ngModel)]="selectedColumns"
-        optionLabel="header"
-        selectedItemsLabel="{0} columns selected"
-        [style]="{ 'min-width': '200px' }"
-        placeholder="Choose Columns"
-      />
-      <p-button
-        label="Clear"
-        class="ml-2"
-        [outlined]="true"
-        icon="pi pi-filter-slash"
-        (click)="clearFilters()"
-      />
+      <p-multiselect display="chip" [options]="columns" [(ngModel)]="selectedColumns" optionLabel="header"
+        selectedItemsLabel="{0} columns selected" [style]="{ 'min-width': '200px' }" placeholder="Choose Columns" />
+      <p-button label="Clear" class="ml-2" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilters()" />
       <p-iconfield iconPosition="left" class="ml-auto">
         <p-inputicon>
           <i class="pi pi-search"></i>
         </p-inputicon>
-        <input
-          pInputText
-          type="text"
-          class="p-inputtext-sm"
-          [(ngModel)]="searchTerm"
-          (input)="dt.filterGlobal(searchTerm, 'contains')"
-          placeholder="Search keyword"
-        />
+        <input pInputText type="text" class="p-inputtext-sm" [(ngModel)]="searchTerm"
+          (input)="dt.filterGlobal(searchTerm, 'contains')" placeholder="Search keyword" />
       </p-iconfield>
     </div>
   </ng-template>
@@ -52,104 +24,108 @@
   <!-- HEADER -->
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th *ngIf="showCheckboxes" pFrozenColumn>
-        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      @if(showCheckboxes){
+      <th pFrozenColumn> 
+        <p-tableHeaderCheckbox ></p-tableHeaderCheckbox>
       </th>
-      <th pFrozenColumn class="min-w-[150px] whitespace-nowrap">
-        <div class="flex items-center gap-2 whitespace-nowrap">
-          Order ID
-          <p-sortIcon field="orderId"></p-sortIcon>
-          <p-columnFilter field="orderId" matchMode="contains" display="icon" />
-        </div>
-      </th>
-      <th *ngFor="let col of columns" pSortableColumn="{{ col.field }}" pResizableColumn class="min-w-[150px] whitespace-nowrap">
-        <div class="flex items-center gap-2">
-          {{ col.header }}
-          <p-sortIcon [field]="col.field"></p-sortIcon>
-          <p-columnFilter type="{{ col.filter || 'text' }}" [field]="col.field" display="menu" />
-        </div>
-      </th>
+      }
+
+      @for (col of columns; track $index) {
+          @if(col.isFrozen){
+            <th pFrozenColumn pSortableColumn="{{ col.field }}" pResizableColumn class="min-w-[150px] whitespace-nowrap">
+              <div class="flex items-center gap-2">
+                {{ col.header }}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+                <p-columnFilter type="{{ col.filter || 'text' }}" [field]="col.field" display="menu" />
+              </div>
+            </th>
+          }@else {
+            <th pSortableColumn="{{ col.field }}" pResizableColumn class="min-w-[150px] whitespace-nowrap">
+              <div class="flex items-center gap-2">
+                {{ col.header }}
+               
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+                <p-columnFilter type="{{ col.filter || 'text' }}" [field]="col.field" display="menu" />
+              </div>
+            </th>
+          }
+
+      }
+
     </tr>
   </ng-template>
 
   <!-- BODY -->
   <ng-template pTemplate="body" let-row let-columns="columns">
     <tr>
-      <td *ngIf="showCheckboxes" pFrozenColumn>
+      @if(showCheckboxes){
+      <td pFrozenColumn>
+        
         <p-tableCheckbox [value]="row"></p-tableCheckbox>
       </td>
-      <td pFrozenColumn>
-        <div class="flex justify-center">
-          {{ row.orderId }}
-        </div>
-      </td>
+      }
 
-      <td *ngFor="let col of columns" class="min-w-[150px] whitespace-nowrap">
-        <ng-container [ngSwitch]="col.field">
-          <ng-container *ngSwitchCase="'customerFName'">
-            {{ row.customerFName }} {{ row.customerLName }}
-          </ng-container>
 
-          <ng-container *ngSwitchCase="'paymentStatus'">
-            <div class="flex justify-center">
-              <p-tag [value]="row[col.field]" [severity]="getSeverity(row[col.field])" />
-            </div>
-          </ng-container>
 
-          <ng-container *ngSwitchCase="'orderStatus'">
-            <div class="flex justify-center">
-              <p-tag [value]="row[col.field]" [severity]="getSeverity(row[col.field])" />
-            </div>
-          </ng-container>
+      @for (col of columns; track $index) {
 
-          <ng-container *ngSwitchCase="'destination'">
-            <div class="flex justify-center">
-              <ng-container *ngIf="row[col.field] === 'PICKUP'">
-                <i class="pi pi-map-marker text-yellow-500 text-base"></i>
-                <span class="text-yellow-600 font-medium bg-yellow-50 px-2 py-1 rounded-full">Pickup</span>
-              </ng-container>
-              <ng-container *ngIf="row[col.field] !== 'PICKUP'">
-                <i class="pi pi-truck text-blue-500 text-base"></i>
-                <span class="text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded-full">Delivery</span>
-              </ng-container>
-            </div>
-          </ng-container>
+          @if(col.isFrozen){
+            <td class="min-w-[150px] whitespace-nowrap" pFrozenColumn> 
+              <ng-container *ngTemplateOutlet="agTableCellTpl; context: { $implicit: row }"></ng-container>
+            </td>
+          }@else {
+            <td class="min-w-[150px] whitespace-nowrap">
+              <ng-container *ngTemplateOutlet="agTableCellTpl; context: { $implicit: row }"></ng-container>
+            </td>
+          }
 
-          <ng-container *ngSwitchCase="'source'">
-            <div class="flex justify-center">
-              {{ row[col.field] }}
-            </div>
-          </ng-container>
+          <ng-template #agTableCellTpl>
+            @if(col.isCustomTpl){
+              <ng-container *ngTemplateOutlet="colTemplateMap[col.field]; context: { $implicit: row }"></ng-container>
+            }@else{
+               <ng-container *ngTemplateOutlet="defaultCell; context: { $implicit: row }"></ng-container>
+            }
 
-          <ng-container *ngSwitchCase="'totalAmount'">
-            <div class="flex justify-center">
-              {{ row[col.field] | currency:'USD':'symbol':'1.0-0' }}
-            </div>
-          </ng-container>
+            <ng-template #defaultCell>
+              @switch (col.type) {
+                  @case ('text') {
 
-          <ng-container *ngSwitchCase="'amountDue'">
-            <div class="flex justify-center">
-              {{ row[col.field] | currency:'USD':'symbol':'1.0-0' }}
-            </div>
-          </ng-container>
+                      @if(col.isTag){
+                        <div class="flex justify-center">
+                          <p-tag [value]="row[col.field]" [severity]="getSeverity(row[col.field])" />
+                        </div>
+                      }@else {
+                        <div class="flex justify-left">
+                          {{row[col.field]}}
+                        </div>
+                      }
 
-          <ng-container *ngSwitchCase="'orderedDate'">
-            <div class="flex justify-center">
-              {{ row[col.field] | date:'MM/dd/yyyy HH:mm:ss' }}
-            </div>
-          </ng-container>
+                  }
+                  @case ('numeric') {
+                      <div class="flex justify-center">
+                        @if(col.isCurrency){
+                          {{ row[col.field] | currency:'USD':'symbol':'1.0-0' }}
+                        }@else {
+                          {{ row[col.field] }}
+                        }
+                      </div>
+                  }
 
-          <ng-container *ngSwitchCase="'eventDate'">
-            <div class="flex justify-center">
-              {{ row[col.field] | date:'MM/dd/yyyy' }}
-            </div>
-          </ng-container>
+                  @case ('date') {
+                  <div class="flex justify-center">
+                    @if(col.isTime){
+                      {{ row[col.field] | date:'MM/dd/yyyy HH:mm:ss' }}
+                    }@else {
+                      {{ row[col.field] | date:'MM/dd/yyyy' }}
+                    }
+                  </div>
+                  }
+                  @default { {{ row[col.field] }} }
+              }
+            </ng-template>
 
-          <ng-container *ngSwitchDefault>
-            {{ row[col.field] }}
-          </ng-container>
-        </ng-container>
-      </td>
+          </ng-template>
+      }
     </tr>
   </ng-template>
 </p-table>

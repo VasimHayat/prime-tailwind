@@ -2,7 +2,7 @@
 
 This project demonstrates how to build **reusable, responsive, and feature-rich table components** using **PrimeNG** and **Tailwind CSS** in an Angular application.
 
-> ⭐ Focus: Dynamic tables with sorting, filtering, column toggling, custom cell templates, and a reusable `<app-table-wrapper>` component.
+> ⭐ Focus: Dynamic tables with sorting, filtering, column toggling, custom cell templates, and a reusable `<ag-prime-table>` component.
 
 ---
 

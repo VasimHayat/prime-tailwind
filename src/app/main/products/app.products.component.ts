@@ -1,9 +1,9 @@
 import { Component, ViewEncapsulation } from "@angular/core";
-import { AgPrimeTable } from "./table/ag.prime.table";
+import { AgPrimeTable } from "../shared/table/ag.prime.table";
 import { AppDataService } from "../../services/app.data.service";
 import { Order } from "../../models/app.order.model";
-import { Column } from "./table/ag.prime.table.meta";
-import { AgPrimeTableColDirective } from "./table/ag.prime.table.col";
+import { Column } from "../shared/table/ag.prime.table.meta";
+import { AgPrimeTableColDirective } from "../shared/table/ag.prime.table.col";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
